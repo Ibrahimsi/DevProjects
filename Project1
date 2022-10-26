@@ -1,0 +1,108 @@
+Website Implementation (Apache) in AWS
+
+Steps
+1. Signed up for an AWS account.
+2. Launched an EC2 instance
+3. Selected the Ubuntu free tier instance
+4. Set the required configurations (Enabled public IP, Security group, and Key pair) and finally launched the instance.
+            Security Group: 22 , 80 Port Open must
+       
+
+7. Next, connect SSH to the ubuntu instance using Terminal via.
+
+sudo apt-get update → Update must
+sudo apt install apache2 →To run apache2 package installation
+
+sudo systemctl status apache2 → Verify that Apache2 service is running?
+
+8. Next, test that Apache HTTP server can respond to requests from the Internet. Open a browser and type the public IP of the Ubuntu instance: http://34.226.195.174. This outputs the Apache2 default page. 
+
+
+INSTALLING MYSQL
+
+To install a Database Management System (DBMS) to be able to store and manage data for the site in a relational database.
+
+sudo apt install mysql-server → Install the MYSQL server
+
+
+
+Login Mysql
+
+
+
+9. Run a security script that comes pre-installed with MySQL, to remove some insecure default settings and lock down access to your database system. run: ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password'; then exit MySQL shell by typing exit and enter.
+
+sudo mysql_secure_installation → Run interactive script
+
+
+
+INSTALLING PHP
+
+sudo apt install php libapache2-mod-php php-mysql → Install the Package
+
+php -v → Check PHP Version 
+
+CREATING A VIRTUAL HOST FOR YOUR WEBSITE USING APACHE
+
+Setting up a domain called projectlamp. Create the directory for projectlamp.
+        
+sudo mkdir /var/www/projectlamp → Make directory
+
+sudo chown -R USER:USER /var/www/projectlamp → Change Ownership
+
+
+
+3. Next, create and open a new configuration file in Apache’s sites-available directory. 
+
+sudo vi /etc/apache2/sites-available/projectlamp.conf → Create NewPage after Edit
+
+
+
+Will create a new blank file. Paste in the following codes after save the file
+
+
+
+sudo a2ensite projectlamp → enable the new virtual host
+sudo a2dissite 000-default → Disable the default website that comes installed with Apache
+sudo apache2ctl configtest → Esure your configuration file doesn’t contain syntax errors
+sudo systemctl reload apache2 → Reload Apache
+
+
+
+ENABLE PHP ON THE WEBSITE
+
+With the default DirectoryIndex settings on Apache, a file named index.html will always take precedence over an index.php file. 
+/etc/apache2/mods-enabled/dir.conf file → Need to edit and change the order in which the index.php file is listed within the DirectoryIndex directive.
+
+Run: sudo vim /etc/apache2/mods-enabled/dir.conf 
+#Change this: #DirectoryIndex index.html index.cgi index.pl index.php index.xhtml index.htm 
+#To this: DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm
+Save and close file.
+sudo systemctl reload apache2 → Reload Apache 
+Finally, we will create a PHP script to test that PHP is correctly installed and configured on your server. 
+vim /var/www/projectlamp/index.php → Create a new file named index.php inside the custom web root folder
+<?php phpinfo(); → Will open a blank file. Add the PHP code
+Save and close the file, then refresh the page to see changes.
+       
+
+
+
+
+
+Thanks
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
